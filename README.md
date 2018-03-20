@@ -1,87 +1,58 @@
-# Project Iolite - Work In Progress
+Installing Graphene on Ubuntu 17.10
+-----------------------------------
 
-First thing, let's utilize linux-sgx:
+* sudo apt install gcc-7 g++-7
 
-1. Download and install Ubuntu Server 17.10.1 (Artful Aardvark)
+* sudo apt install gcc-4.8 g++-4.8
+    
+* git clone https://github.com/oscarlab/graphene.git
 
-2. Install the SGX Driver by fulfilling the following instructions:
-  * git clone https://github.com/intel/linux-sgx-driver.git
-  * Check if matching Kernel headers are installed: 
-	    + dpkg-query -s linux-headers-$(uname -r)
-      If not, run: 
-	    + sudo apt-get install linux-headers-$(uname -r)
-      
-  * In order to build the driver perform the following :
-	    + sudo apt install make gcc
-	    + make
-      
-	* In order to install your freshly built driver perform the following:
-    Latest support in the secure boot feature is a bit problematic.
-    Either you disable it (didn't work for me) or create the kernel signing keys for the new isgx.ko module:
-      +	sudo openssl req -new -x509 -newkey rsa:4096 -keyout /usr/src/linux-headers-$(uname -r)/certs/signing_key.pem -nodes -days 36500 -subj "/CN=MyDevMachine/" -out /usr/src/linux-headers-$(uname -r)/certs/signing_key.x509
-	    +	sudo make install
-			
-3. Build Linux SGX's SDK and PSW
-	* Install addition required tools to build the SDK and PSW:
-		  + sudo apt install libssl-dev libcurl4-openssl-dev protobuf-compiler libprotobuf-dev build-essential ocaml ocamlbuild automake libtool
-	* Download precompiled optimized IPP/string/math libraries:
-	    + cd linux-sgx-master; ./download_prebuilt.sh
-	* Fix a compilation warning which is considered as an error:
-	    + sed -i 's/# additional warnings flags for C++/# additional warnings flags for C++\nCXXFLAGS += \-Wno\-error=unused\-parameter/' buildenv.mk
-		
-		
-  * For building the SDK and PSW choose between the following options:
-	    + make
-      or
-		  + make DEBUG=1
-		The latter is for supporting debug information.
-	  
-  * For building the SDK Installer choose between the following options:
-	    + make sdk_install_pkg
-      + make sdk_install_pkg DEBUG=1
-		The latter is for supporting debug information
-		
-  * For building the PSW Installer choose between the following options:
-      + make psw_install_pkg
-      + make psw_install_pkg DEBUG=1
-    The latter is for supporting debug information
-		
-  * Install Intel's Capability Licensing Service (iclsClient):
+* git clone -b sgx_driver_1.9 https://github.com/intel/linux-sgx-driver.git
+    * sudo apt install make
+    * sudo openssl req -new -x509 -newkey rsa:4096 -keyout /usr/src/linux-headers-$(uname -r)/certs/signing_key.pem -nodes -days 36500 -subj "/CN=MyDevMachine/" -out /usr/src/linux-headers-$(uname -r)/certs/signing_key.x509
+    * sudo make install
+    * sudo ln -s /lib/modules/$(uname -r)/kernel/drivers/intel/sgx/isgx.ko /lib/modules/$(uname -r)
+    * sudo depmod -a
+    * sudo modprobe sgx
+    
+* git clone -b sgx_1.9 https://github.com/intel/linux-sgx.git
+    * sudo apt install libssl-dev libcurl4-openssl-dev protobuf-compiler libprotobuf-dev build-essential ocaml python ocamlbuild automake libtool
+    * cd linux-sgx; ./download_prebuilt.sh
+    * cp sgx_sdk_psw.patch linux-sgx
+    * cd linux-sgx
+    * git apply sgx_sdk_psw.patch --stat
+    * make sdk_install_pkg DEBUG=1
+    * sudo ./linux/installer/bin/sgx_linux_x64_sdk_1.9.100.39124.bin
+        > Choose no
+        > Choose /opt/intel
+    
+* Install Intel's Capability Licensing Service (iclsClient):
     (ICLS is the activation site at Intel where client installations are tracked)
-      + sudo apt install alien
-      + cd /tmp; wget http://registrationcenter-download.intel.com/akdlm/irc_nas/11414/iclsClient-1.45.449.12-1.x86_64.rpm
-      + sudo alien --scripts ./iclsClient-1.45.449.12-1.x86_64.rpm
-      + sudo dpkg -i ./iclsclient_1.45.449.12-2_amd64.deb
-		
-  * Install JHI - Dynamic Application Loader (DAL) Host Interface 
-    (A daemon and libraries which allow user space applications to install Java applets on DAL FW and communicate with them.)
-      + git clone https://github.com/intel/dynamic-application-loader-host-interface.git
-      + cd ./dynamic-application-loader-host-interface
-      + cmake .
-      + sudo make install
-      + sudo systemctl enable jhi
-		
-   * Install the SDK:
-      + cd linux/installer/bin/
-      + sudo ./sgx_linux_sdk_x64_${version}.bin
-    Choose target directory : /opt/intel
-    It is now installed in /opt/intel/sgxsdk
-			
-  * Install the PSW:
-    (Platform Software - Installs a full set of Intel Management Engine software components which include Intel Dynamic Application Loader Host Interface Service (DAL Host Interface Service))
-      + cd linux/installer/bin/
-      + sudo ./sgx_linux_sdk_x64_${version}.bin
-    It is now installed in /opt/intel/sgxpsw
-		
-   * Give yourself permissions for both the SDK and PSW:
-      + sudo chown ${uid}:${gid}  /opt/intel -R
-	
-  * aesmd Service - Should be approached only if you are behind a proxy server
-    AESM : SGX Application Enclave Service Manager included in the PSW (Platform Software) Installation, AESM runs as a service (daemon) with aesmd permissions
-    + Stop the aesmd service:
-        > sudo service aesmd stop
-    + Edit /etc/aesmd.conf to include your proxy setup
-    + Start the aesmd service:
-        > sudo service aesmd start
+        > sudo dpkg -i iclsclient_1.45.449.12-2_all.deb
+    * make psw_install_pkg DEBUG=1
+    * sudo ./linux/installer/bin/sgx_linux_x64_psw_1.9.100.39124.bin
+    * sudo sh -c 'echo export SGX_ENCLAVE_KEY=/opt/intel/sgxkey/enclave-key.pem >> /opt/intel/sgxsdk/environment'
+    * sh -c 'echo source /opt/intel/sgxsdk/environment >> ~/.bashrc'
+    * sudo chown <uid>:<gid> /opt/intel -R
+
+* Install Graphene:  
+    * cd graphene; git submodule update --init
+    * cd Pal/src/host/Linux-SGX/sgx-driver
+    * make DEBUG=1
+        > Input the sgx driver directory you already installed
+    * sudo cp graphene-sgx.ko /lib/modules/`uname -r`/kernel/drivers/intel/sgx/
+    * sudo ln -s /lib/modules/$(uname -r)/kernel/drivers/intel/sgx/graphene-sgx.ko /lib/modules/$(uname -r)
+    * sudo depmod -a
+    * sudo modprobe graphene-sgx
+    * sudo crontab -e
+        > Select vim (:>)
+    * sudo crontab -l | { cat; echo "@reboot /usr/bin/sudo /sbin/insmod /lib/modules/`/bin/uname -r`/kernel/drivers/intel/sgx/graphene-sgx.ko"; } | sudo crontab -
+    * sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
+    * cd Pal/src
+    * make SGX=1
+    * cd ../..
+    * cd LibOS
+    * make SGX=1 DEBUG=1 SGX_SIGNER_KEY=/opt/intel/sgxkey/enclave-key.pem
+        > Grab a cup of coffee/tea
         
- * Insall Eclipse Mars - TBD
+Enjoy
