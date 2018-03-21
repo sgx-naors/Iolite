@@ -1,7 +1,6 @@
-Installing Graphene on Ubuntu Server 17.10.1
---------------------------------------------
+ <b><font size="16">Installing Graphene on Ubuntu Server 17.10.1</font></b>
 
-In order to compile the SDK, PSW and part of the Graphene-SGX library, install GCC and G++:
+In order to compile the SDK, PSW and the Graphene-SGX library, install GCC and G++:
 * sudo apt install gcc-7 g++-7 
 
 GCC and G++ 4.8 is needed later on for compiling LibOS, specifically for glibc-2.19, install them as well:
@@ -18,9 +17,9 @@ Graphene-SGX requires Intel-SGX driver version 1.9. Download and install it:
 * sudo depmod -a
 * sudo modprobe sgx
 
-Download and install Intel's Capability Licensing Service (iclsClient), it is required for the PSW:
----------------------------------------------------------------------------------------------------
-(ICLS is the activation site at Intel where client installations are tracked)
+Download and install Intel's Capability Licensing Service (iclsClient):
+-----------------------------------------------------------------------
+ICLS is the activation site at Intel where client installations are tracked and iclsClient is required for the PSW. 
 * You can download the debian package from <a href="https://github.com/sgx-naors/Iolite/raw/master/iclsclient_1.45.449.12-2_amd64.deb">here</a>.
 * sudo dpkg -i iclsclient_1.45.449.12-2_all.deb - It will be placed in /opt/Intel
     
