@@ -7,10 +7,8 @@ In order to compile the SDK, PSW and part of the Graphene-SGX library, install G
 GCC and G++ 4.8 is needed later on for compiling LibOS, specifically for glibc-2.19, install them as well:
 * sudo apt install gcc-4.8 g++-4.8
     
-Download the latest Graphene from GitHub:
-* git clone https://github.com/oscarlab/graphene.git
-
 Graphene-SGX requires Intel-SGX driver version 1.9. Download and install it:
+----------------------------------------------------------------------------
 * git clone -b sgx_driver_1.9 https://github.com/intel/linux-sgx-driver.git
 * sudo apt install make
 * sudo make DEBUG=1 (DEBUG is optional)
@@ -21,6 +19,7 @@ Graphene-SGX requires Intel-SGX driver version 1.9. Download and install it:
 * sudo modprobe sgx
 
 Download and install Intel's Capability Licensing Service (iclsClient), it is required for the PSW:
+---------------------------------------------------------------------------------------------------
 (ICLS is the activation site at Intel where client installations are tracked)
 * You can download the debian package from <a href="https://github.com/sgx-naors/Iolite/raw/master/iclsclient_1.45.449.12-2_amd64.deb">here</a>.
 * sudo dpkg -i iclsclient_1.45.449.12-2_all.deb - It will be placed in /opt/Intel
@@ -30,6 +29,7 @@ Generate the Enclave signing key:
 * sudo openssl genrsa -3 -out /opt/intel/sgxkey/enclave-key.pem 3072
 
 Graphene-SGX requires Intel-SGX SDK and Intel-SGX PSW version 1.9. Download and install them:
+---------------------------------------------------------------------------------------------
 * git clone -b sgx_1.9 https://github.com/intel/linux-sgx.git
 * sudo apt install libssl-dev libcurl4-openssl-dev protobuf-compiler libprotobuf-dev build-essential ocaml python ocamlbuild automake libtool
 * cd linux-sgx; ./download_prebuilt.sh
@@ -38,7 +38,7 @@ Graphene-SGX requires Intel-SGX SDK and Intel-SGX PSW version 1.9. Download and 
 * cd linux-sgx
 * git apply sgx_sdk_psw.patch --stat
 * Compile the SDK and PSW:
-    * make DEBUG=1
+    * make DEBUG=1 (DEBUG is optional)
 * Install the SDK:
     * make sdk_install_pkg DEBUG=1 (DEBUG is optional)
     * sudo ./linux/installer/bin/sgx_linux_x64_sdk_1.9.100.39124.bin
@@ -52,7 +52,9 @@ Graphene-SGX requires Intel-SGX SDK and Intel-SGX PSW version 1.9. Download and 
     * source ~/.bashrc
     * sudo chown \<uid\>:\<gid\> /opt/intel -R
 
-Install Graphene:  
+Download and install Graphene :
+-------------------------------
+* git clone https://github.com/oscarlab/graphene.git
 * cd graphene; git submodule update --init
 * Install Graphene's SGX driver:
     * cd Pal/src/host/Linux-SGX/sgx-driver
