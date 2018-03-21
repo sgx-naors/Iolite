@@ -27,7 +27,7 @@ Download and install Intel's Capability Licensing Service (iclsClient), it is re
     
 Generate the Enclave signing key:
 * sudo mkdir /opt/intel /opt/intel/sgxkey
-* sudo openssl genrsa -3-out /opt/intel/sgxkey/enclave-key.pem 3072
+* sudo openssl genrsa -3 -out /opt/intel/sgxkey/enclave-key.pem 3072
 
 Graphene-SGX requires Intel-SGX SDK and Intel-SGX PSW version 1.9. Download and install them:
 * git clone -b sgx_1.9 https://github.com/intel/linux-sgx.git
