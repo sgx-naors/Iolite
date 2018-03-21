@@ -53,16 +53,17 @@ Graphene-SGX requires SGX SDK and PSW version 1.9. Download and install them:
 
 Install Graphene:  
 * cd graphene; git submodule update --init
-* cd Pal/src/host/Linux-SGX/sgx-driver
-* make DEBUG=1
-    > Enter the SGX driver's directory compilation directory.
-* sudo cp graphene-sgx.ko /lib/modules/`uname -r`/kernel/drivers/intel/sgx/
-* sudo ln -s /lib/modules/$(uname -r)/kernel/drivers/intel/sgx/graphene-sgx.ko /lib/modules/$(uname -r)
-* sudo depmod -a
-* sudo modprobe graphene-sgx
-* sudo crontab -e
-    > Select vim (:>)
-* sudo crontab -l | { cat; echo "@reboot /usr/bin/sudo /sbin/insmod /lib/modules/`/bin/uname -r`/kernel/drivers/intel/sgx/graphene-sgx.ko"; } | sudo crontab -
+* Install Graphene's SGX driver:
+    * cd Pal/src/host/Linux-SGX/sgx-driver
+    * make DEBUG=1
+        > Enter the SGX driver's directory compilation directory.
+    * sudo cp graphene-sgx.ko /lib/modules/`uname -r`/kernel/drivers/intel/sgx/
+    * sudo ln -s /lib/modules/$(uname -r)/kernel/drivers/intel/sgx/graphene-sgx.ko /lib/modules/$(uname -r)
+    * sudo depmod -a
+    * sudo modprobe graphene-sgx
+    * sudo crontab -e
+        > Select vim (:>)
+    * sudo crontab -l | { cat; echo "@reboot /usr/bin/sudo /sbin/insmod /lib/modules/`/bin/uname -r`/kernel/drivers/intel/sgx/graphene-sgx.ko"; } | sudo crontab -
 * Compile PAL
     * cd Pal/src
     * make SGX=1
