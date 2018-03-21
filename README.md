@@ -21,7 +21,7 @@ Graphene-SGX requires SGX driver version 1.9. Download and install it.
 
 Download and install Intel's Capability Licensing Service (iclsClient), it is required for the PSW:
 (ICLS is the activation site at Intel where client installations are tracked)
-* You can download the debian pacage from *here*.
+* You can download the debian pacage from [here]: https://github.com/sgx-naors/Iolite/blob/master/iclsclient_1.45.449.12-2_amd64.deb
 * sudo dpkg -i iclsclient_1.45.449.12-2_all.deb - It will be placed in /opt/Intel
     
 Generate the Enclave signing key
