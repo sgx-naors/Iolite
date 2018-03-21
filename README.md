@@ -12,9 +12,9 @@ Graphene-SGX requires Intel-SGX driver version 1.9. Download and install it:
 * git clone -b sgx_driver_1.9 https://github.com/intel/linux-sgx-driver.git
 * sudo apt install make
 * sudo make DEBUG=1 (DEBUG is optional)
-* sudo openssl req -new -x509 -newkey rsa:4096 -keyout /usr/src/linux-headers-$(uname -r)/certs/signing_key.pem -nodes -days 36500 -subj "/CN=MyDevMachine/" -out /usr/src/linux-headers-$(uname -r)/certs/signing_key.x509
+* sudo openssl req -new -x509 -newkey rsa:4096 -keyout /usr/src/linux-headers-\$\(uname -r\)/certs/signing_key.pem -nodes -days 36500 -subj "/CN=MyDevMachine/" -out /usr/src/linux-headers-$(uname -r)/certs/signing_key.x509
 * sudo make install
-* sudo ln -s /lib/modules/$(uname -r)/kernel/drivers/intel/sgx/isgx.ko /lib/modules/$(uname -r)
+* sudo ln -s /lib/modules/\$\(uname -r\)/kernel/drivers/intel/sgx/isgx.ko /lib/modules/\$\(uname -r\)
 * sudo depmod -a
 * sudo modprobe sgx
 
@@ -60,13 +60,13 @@ Download and install Graphene :
     * cd Pal/src/host/Linux-SGX/sgx-driver
     * make DEBUG=1 (DEBUG is optional)
         > Enter Intel-SGX driver's compilation directory.
-    * sudo cp graphene-sgx.ko /lib/modules/`uname -r`/kernel/drivers/intel/sgx/
-    * sudo ln -s /lib/modules/$(uname -r)/kernel/drivers/intel/sgx/graphene-sgx.ko /lib/modules/$(uname -r)
+    * sudo cp graphene-sgx.ko /lib/modules/\$\(uname -r\)/kernel/drivers/intel/sgx/
+    * sudo ln -s /lib/modules/\$\(uname -r\)/kernel/drivers/intel/sgx/graphene-sgx.ko /lib/modules/\$\(uname -r\)
     * sudo depmod -a
     * sudo modprobe graphene-sgx
     * sudo crontab -e
         > Select vim (:>)
-    * sudo crontab -l | { cat; echo "@reboot /usr/bin/sudo /sbin/insmod /lib/modules/`/bin/uname -r`/kernel/drivers/intel/sgx/graphene-sgx.ko"; } | sudo crontab -
+    * sudo crontab -l | { cat; echo "@reboot /usr/bin/sudo /sbin/insmod /lib/modules/\$\(uname -r\)/kernel/drivers/intel/sgx/graphene-sgx.ko"; } | sudo crontab -
 * Compile PAL
     * cd Pal/src
     * make SGX=1
