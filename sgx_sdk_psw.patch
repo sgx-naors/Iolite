@@ -1,0 +1,65 @@
+diff --git a/buildenv.mk b/buildenv.mk
+index 7da182f..643de4b 100644
+--- a/buildenv.mk
++++ b/buildenv.mk
+@@ -91,16 +91,16 @@ COMMON_FLAGS += -ffunction-sections -fdata-sections
+ COMMON_FLAGS += -Wall -Wextra -Winit-self -Wpointer-arith -Wreturn-type \
+ 		-Waddress -Wsequence-point -Wformat-security \
+ 		-Wmissing-include-dirs -Wfloat-equal -Wundef -Wshadow \
+-		-Wcast-align -Wconversion -Wredundant-decls
++		-Wcast-align -Wconversion -Wredundant-decls -Wno-error=unused-parameter
+ 
+ # additional warnings flags for C
+-CFLAGS += -Wjump-misses-init -Wstrict-prototypes -Wunsuffixed-float-constants
++CFLAGS += -Wjump-misses-init -Wstrict-prototypes -Wunsuffixed-float-constants -Wno-deprecated-declarations
+ 
+ # additional warnings flags for C++
+-CXXFLAGS += -Wnon-virtual-dtor
++CXXFLAGS += -Wnon-virtual-dtor -Wno-deprecated-declarations
+ 
+ # for static_assert()
+-CXXFLAGS += -std=c++0x
++CXXFLAGS += -std=c++0x -Wno-deprecated-declarations -Wno-implicit-fallthrough
+ 
+ .DEFAULT_GOAL := all
+ # this turns off the RCS / SCCS implicit rules of GNU Make
+diff --git a/common/inc/stdc++/new b/common/inc/stdc++/new
+index b120435..8e3ab89 100644
+--- a/common/inc/stdc++/new
++++ b/common/inc/stdc++/new
+@@ -51,8 +51,8 @@ namespace std
+ 	new_handler set_new_handler(new_handler handler) throw();
+ };
+ 
+-void* SGXAPI operator new (size_t) throw (std::bad_alloc);
+-void* SGXAPI operator new[] (size_t) throw (std::bad_alloc);
++void* SGXAPI operator new (size_t) throw ();
++void* SGXAPI operator new[] (size_t) throw ();
+ 
+ void* SGXAPI operator new (size_t, const std::nothrow_t&) throw();
+ void* SGXAPI operator new (size_t, void*) throw();
+diff --git a/common/se_wrapper/Makefile b/common/se_wrapper/Makefile
+index d1481eb..0f267c0 100644
+--- a/common/se_wrapper/Makefile
++++ b/common/se_wrapper/Makefile
+@@ -31,7 +31,7 @@
+ 
+ include ../../buildenv.mk
+ 
+-CFLAGS += -Werror -D_GNU_SOURCE -fPIC
++CFLAGS += -Werror -D_GNU_SOURCE -fPIC -Wno-deprecated-declarations
+ CFLAGS += $(ADDED_INC)
+ 
+ CPPFLAGS := -I$(COMMON_DIR)/inc/ \
+diff --git a/sdk/cpprt/linux/libunwind/include/libunwind-x86_64.h b/sdk/cpprt/linux/libunwind/include/libunwind-x86_64.h
+index 526b1ea..18cd1f9 100644
+--- a/sdk/cpprt/linux/libunwind/include/libunwind-x86_64.h
++++ b/sdk/cpprt/linux/libunwind/include/libunwind-x86_64.h
+@@ -35,6 +35,7 @@ extern "C" {
+ #include <sys/types.h>
+ #include <inttypes.h>
+ #include <ucontext.h>
++#include <signal.h>
+ 
+ #define UNW_TARGET		x86_64
+ #define UNW_TARGET_X86_64	1
