@@ -1,5 +1,5 @@
- <center>Installing Graphene on Ubuntu Server 17.10.1
- <center>--------------------------------------------</center>
+Installing Graphene on Ubuntu Server 17.10.1
+--------------------------------------------
 
 In order to compile the SDK, PSW and the Graphene-SGX library, install GCC and G++:
 * sudo apt install gcc-7 g++-7 
