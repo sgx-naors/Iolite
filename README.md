@@ -59,7 +59,7 @@ Download and install Graphene :
 * Install Graphene's SGX driver:
     * cd Pal/src/host/Linux-SGX/sgx-driver
     * make DEBUG=1 (DEBUG is optional)
-        > Enter the SGX driver's directory compilation directory.
+        > Enter Intel-SGX driver's compilation directory.
     * sudo cp graphene-sgx.ko /lib/modules/`uname -r`/kernel/drivers/intel/sgx/
     * sudo ln -s /lib/modules/$(uname -r)/kernel/drivers/intel/sgx/graphene-sgx.ko /lib/modules/$(uname -r)
     * sudo depmod -a
