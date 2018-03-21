@@ -32,7 +32,7 @@ Graphene-SGX requires SGX SDK and PSW version 1.9. Download and install them.
 * git clone -b sgx_1.9 https://github.com/intel/linux-sgx.git
 * sudo apt install libssl-dev libcurl4-openssl-dev protobuf-compiler libprotobuf-dev build-essential ocaml python ocamlbuild automake libtool
 * cd linux-sgx; ./download_prebuilt.sh
-* Download the patch needed for the compilation of the SDK and PSW. You can find it in *here*.
+* Download the patch needed for the compilation of the SDK and PSW. You can find it in <a href="https://github.com/sgx-naors/Iolite/blob/master/sgx_sdk_psw.patch">here</a>.
 * cp sgx_sdk_psw.patch linux-sgx
 * cd linux-sgx
 * git apply sgx_sdk_psw.patch --stat
