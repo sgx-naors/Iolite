@@ -1,16 +1,16 @@
 Installing Graphene on Ubuntu Server 17.10.1
 --------------------------------------------
 
-In order to compile the SDK, PSW and part of the Graphene-SGX library, install GCC and G++
+In order to compile the SDK, PSW and part of the Graphene-SGX library, install GCC and G++:
 * sudo apt install gcc-7 g++-7 
 
-GCC and G++ 4.8 is needed later on for compiling LibOS, specifically for glibc-2.19
+GCC and G++ 4.8 is needed later on for compiling LibOS, specifically for glibc-2.19, install them as well:
 * sudo apt install gcc-4.8 g++-4.8
     
-Download the latest Graphene from GitHub    
+Download the latest Graphene from GitHub:
 * git clone https://github.com/oscarlab/graphene.git
 
-Graphene-SGX requires SGX driver version 1.9. Download and install it.
+Graphene-SGX requires SGX driver version 1.9. Download and install it:
 * git clone -b sgx_driver_1.9 https://github.com/intel/linux-sgx-driver.git
 * sudo apt install make
 * sudo openssl req -new -x509 -newkey rsa:4096 -keyout /usr/src/linux-headers-$(uname -r)/certs/signing_key.pem -nodes -days 36500 -subj "/CN=MyDevMachine/" -out /usr/src/linux-headers-$(uname -r)/certs/signing_key.x509
@@ -24,11 +24,11 @@ Download and install Intel's Capability Licensing Service (iclsClient), it is re
 * You can download the debian package from <a href="https://github.com/sgx-naors/Iolite/raw/master/iclsclient_1.45.449.12-2_amd64.deb">here</a>.
 * sudo dpkg -i iclsclient_1.45.449.12-2_all.deb - It will be placed in /opt/Intel
     
-Generate the Enclave signing key
-* mkdir /opt/intel/sgxkey
+Generate the Enclave signing key:
+* sudo mkdir /opt/intel /opt/intel/sgxkey
 * sudo openssl genrsa -3-out /opt/intel/sgxkey/enclave-key.pem 3072
 
-Graphene-SGX requires SGX SDK and PSW version 1.9. Download and install them.
+Graphene-SGX requires SGX SDK and PSW version 1.9. Download and install them:
 * git clone -b sgx_1.9 https://github.com/intel/linux-sgx.git
 * sudo apt install libssl-dev libcurl4-openssl-dev protobuf-compiler libprotobuf-dev build-essential ocaml python ocamlbuild automake libtool
 * cd linux-sgx; ./download_prebuilt.sh
@@ -49,7 +49,7 @@ Graphene-SGX requires SGX SDK and PSW version 1.9. Download and install them.
     * sudo sh -c 'echo export SGX_ENCLAVE_KEY=/opt/intel/sgxkey/enclave-key.pem >> /opt/intel/sgxsdk/environment'
     * sh -c 'echo source /opt/intel/sgxsdk/environment >> ~/.bashrc'
     * source ~/.bashrc
-    * sudo chown <uid>:<gid> /opt/intel -R
+    * sudo chown \<uid\>:\<gid\> /opt/intel -R
 
 Install Graphene:  
 * cd graphene; git submodule update --init
