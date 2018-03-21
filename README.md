@@ -10,9 +10,10 @@ GCC and G++ 4.8 is needed later on for compiling LibOS, specifically for glibc-2
 Download the latest Graphene from GitHub:
 * git clone https://github.com/oscarlab/graphene.git
 
-Graphene-SGX requires SGX driver version 1.9. Download and install it:
+Graphene-SGX requires Intel-SGX driver version 1.9. Download and install it:
 * git clone -b sgx_driver_1.9 https://github.com/intel/linux-sgx-driver.git
 * sudo apt install make
+* sudo make DEBUG=1 (DEBUG is optional)
 * sudo openssl req -new -x509 -newkey rsa:4096 -keyout /usr/src/linux-headers-$(uname -r)/certs/signing_key.pem -nodes -days 36500 -subj "/CN=MyDevMachine/" -out /usr/src/linux-headers-$(uname -r)/certs/signing_key.x509
 * sudo make install
 * sudo ln -s /lib/modules/$(uname -r)/kernel/drivers/intel/sgx/isgx.ko /lib/modules/$(uname -r)
@@ -28,7 +29,7 @@ Generate the Enclave signing key:
 * sudo mkdir /opt/intel /opt/intel/sgxkey
 * sudo openssl genrsa -3-out /opt/intel/sgxkey/enclave-key.pem 3072
 
-Graphene-SGX requires SGX SDK and PSW version 1.9. Download and install them:
+Graphene-SGX requires Intel-SGX SDK and Intel-SGX PSW version 1.9. Download and install them:
 * git clone -b sgx_1.9 https://github.com/intel/linux-sgx.git
 * sudo apt install libssl-dev libcurl4-openssl-dev protobuf-compiler libprotobuf-dev build-essential ocaml python ocamlbuild automake libtool
 * cd linux-sgx; ./download_prebuilt.sh
@@ -39,11 +40,11 @@ Graphene-SGX requires SGX SDK and PSW version 1.9. Download and install them:
 * Compile the SDK and PSW:
     * make DEBUG=1
 * Install the SDK:
-    * make sdk_install_pkg DEBUG=1
+    * make sdk_install_pkg DEBUG=1 (DEBUG is optional)
     * sudo ./linux/installer/bin/sgx_linux_x64_sdk_1.9.100.39124.bin
         > Install it into /opt/intel
 * Install the PSW:
-    * make psw_install_pkg DEBUG=1
+    * make psw_install_pkg DEBUG=1 (DEBUG is optional)
     * sudo ./linux/installer/bin/sgx_linux_x64_psw_1.9.100.39124.bin
 * Finalize the installation:    
     * sudo sh -c 'echo export SGX_ENCLAVE_KEY=/opt/intel/sgxkey/enclave-key.pem >> /opt/intel/sgxsdk/environment'
@@ -71,7 +72,7 @@ Install Graphene:
 * Compile LibOS    
     * sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
     * cd LibOS
-    * make SGX=1 DEBUG=1 SGX_SIGNER_KEY=/opt/intel/sgxkey/enclave-key.pem
+    * make SGX=1 SGX_SIGNER_KEY=/opt/intel/sgxkey/enclave-key.pem DEBUG=1 (DEBUG is optional)
         > Grab a cup of coffee/tea
         
 Enjoy
