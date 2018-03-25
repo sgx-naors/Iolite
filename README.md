@@ -16,7 +16,7 @@ Graphene-SGX requires Intel-SGX driver version 1.9. Download and install it:
 * sudo make install
 * sudo ln -s /lib/modules/\$\(uname -r\)/kernel/drivers/intel/sgx/isgx.ko /lib/modules/\$\(uname -r\)
 * sudo depmod -a
-* sudo modprobe sgx
+* sudo modprobe isgx
 
 Download and install Intel's Capability Licensing Service (iclsClient):
 -----------------------------------------------------------------------
