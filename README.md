@@ -69,7 +69,7 @@ Download and install Graphene :
     * sudo crontab -l | { cat; echo "@reboot /usr/bin/sudo /sbin/insmod /lib/modules/\$\(uname -r\)/kernel/drivers/intel/sgx/graphene-sgx.ko"; } | sudo crontab -
 * Compile PAL
     * cd Pal/src
-    * make SGX=1
+    * make SGX=1 DEBUG=1 (DEBUG is optional)
     * cd ../..
 * Compile LibOS    
     * sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
